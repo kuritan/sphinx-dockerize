@@ -19,19 +19,27 @@ $ cd <this repository folder>
 $ docker build --no-cache=true -t <the-docker-image-name>:<tag> .
 ```
 
-- build site contents
+- creat a doc project
+
+```
+$ ​docker run <arguments> <the-docker-image-name> quickstart
+```
+
+It will create a dir named 'test-project'. You can change the dir's name via 'entrypoint.sh'.
+
+- build doc project contents
 
 ```
 $ ​docker run <arguments> <the-docker-image-name> build
 ```
 
-- run site container
+- run doc project container
 
 ```
 $ ​docker run -p 8000:8000 <arguments> <the-docker-image-name> serve
 ```
 
-### just one command
+### just one command(option)
 We also provide a shell script(named sphinxdockerize.sh) help you to do both ___build___ and ___serve___ action.
 
 First you need give execute permission to the script, and install sphinx by yourself.

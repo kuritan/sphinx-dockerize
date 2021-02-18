@@ -1,6 +1,7 @@
 #!/bin/sh
 set -x
 
+QUICK_START_ACTION="quickstart"
 MAKE_ACTION="build"
 SERVE_ACTION="serve"
 WORK_DIR="/root"
@@ -9,6 +10,7 @@ BUILD_DIR="$DOC_DIR/build"
 SOURCE_DIR="$DOC_DIR/source"
 CONFIG_FILE_NAME="Makefile"
 BUILD_CONTENT_PACKAGE="site.tar.gz"
+QUICK_START_COMMAND="sphinx-quickstart"
 BUILD_COMMAND="make html"
 SERVE_COMMAND="sphinx-autobuild $SOURCE_DIR $BUILD_DIR"
 
@@ -16,6 +18,23 @@ SERVE_COMMAND="sphinx-autobuild $SOURCE_DIR $BUILD_DIR"
 # just execute if option number > 1
 if [ $# -gt 1 ]; then
     exec "$@"
+
+#
+# quickstart handler
+# 
+elif [ $1 = $QUICK_START_ACTION ]; then
+    if [ ! -d $DOC_DIR ]; then
+        echo "doc project directory does not exist."
+        echo "auto create a test-project."
+    fi
+    mkdir -p $DOC_DIR
+
+    # sphinx-quickstart
+    cd $DOC_DIR
+    echo "Please follow the guide."
+    $QUICK_START_COMMAND
+
+
 # 
 # build handler
 #
