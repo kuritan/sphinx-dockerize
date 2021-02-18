@@ -22,7 +22,7 @@ if [ $# -gt 1 ]; then
 #
 # quickstart handler
 # 
-elif [ $1 = $QUICK_START_ACTION ]; then
+elif [ "$1" = $QUICK_START_ACTION ]; then
     if [ ! -d $DOC_DIR ]; then
         echo "doc project directory does not exist."
         echo "auto create a test-project."
@@ -30,7 +30,7 @@ elif [ $1 = $QUICK_START_ACTION ]; then
     mkdir -p $DOC_DIR
 
     # sphinx-quickstart
-    cd $DOC_DIR
+    cd $DOC_DIR || exit
     echo "Please follow the guide."
     $QUICK_START_COMMAND
 
@@ -38,7 +38,7 @@ elif [ $1 = $QUICK_START_ACTION ]; then
 # 
 # build handler
 #
-elif [ $1 = $MAKE_ACTION ]; then
+elif [ "$1" = $MAKE_ACTION ]; then
     if [ ! -d $DOC_DIR -o ! -f $DOC_DIR/$CONFIG_FILE_NAME ]; then
         echo "doc directory or Makefile does not exist."
         echo "make sure you set them up."
@@ -47,12 +47,12 @@ elif [ $1 = $MAKE_ACTION ]; then
     fi
 
     # build docs
-    cd $DOC_DIR
+    cd $DOC_DIR || exit
     $BUILD_COMMAND
 
     # package all site contents
-    cd $BUILD_DIR
-    tar -zcvf $BUILD_CONTENT_PACKAGE *
+    cd $BUILD_DIR || exit
+    tar -zcvf $BUILD_CONTENT_PACKAGE ./*
     # move to the project's root dir
     mv $BUILD_CONTENT_PACKAGE $WORK_DIR/$BUILD_CONTENT_PACKAGE
     echo "Built all site contents."
@@ -61,7 +61,7 @@ elif [ $1 = $MAKE_ACTION ]; then
 # 
 # serve handler
 #
-elif [ $1 = $SERVE_ACTION ]; then
+elif [ "$1" = $SERVE_ACTION ]; then
     # root dir now
     if [ ! -f $BUILD_CONTENT_PACKAGE ]; then
         echo "site files tar file does not exist."
@@ -72,10 +72,10 @@ elif [ $1 = $SERVE_ACTION ]; then
 
     # extract all site contents to target dir
     mkdir -p $BUILD_DIR
-    rm -rf $BUILD_DIR/*
+    rm -rf "${BUILD_DIR:?}"/*
     tar -xvzf $BUILD_CONTENT_PACKAGE -C $BUILD_DIR/
 
-    cd $DOC_DIR
+    cd $DOC_DIR || exit
     $SERVE_COMMAND
     
 else

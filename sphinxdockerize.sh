@@ -46,11 +46,11 @@ function build {
     fi
 
     # build docs
-    cd $DOC_DIR
+    cd $DOC_DIR || exit
     $BUILD_COMMAND
 
     # package all site contents
-    cd $BUILD_DIR
+    cd $BUILD_DIR || exit
     tar -zcvf $BUILD_CONTENT_PACKAGE *
     # move to the project's root dir
     mv $BUILD_CONTENT_PACKAGE $WORK_DIR/$BUILD_CONTENT_PACKAGE
@@ -72,10 +72,10 @@ function serve {
 
     # extract all site contents to target dir
     mkdir -p $BUILD_DIR
-    rm -rf $BUILD_DIR/*
+    rm -rf "${BUILD_DIR:?}"/*
     tar -xvzf $BUILD_CONTENT_PACKAGE -C $BUILD_DIR/
 
-    cd $DOC_DIR
+    cd $DOC_DIR || exit
     $SERVE_COMMAND
 }
 
