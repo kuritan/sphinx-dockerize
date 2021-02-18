@@ -22,7 +22,7 @@ $ docker build --no-cache=true -t <the-docker-image-name>:<tag> .
 - creat a doc project
 
 ```
-$ ​docker run <arguments> <the-docker-image-name> quickstart
+$ ​docker run -it -v $PWD:/root <the-docker-image-name> quickstart
 ```
 
 It will create a dir named 'test-project'. You can change the dir's name via 'entrypoint.sh'.
@@ -30,13 +30,13 @@ It will create a dir named 'test-project'. You can change the dir's name via 'en
 - build doc project contents
 
 ```
-$ ​docker run <arguments> <the-docker-image-name> build
+$ ​docker run -it -v $PWD:/root <the-docker-image-name> build
 ```
 
 - run doc project container
 
 ```
-$ ​docker run -p 8000:8000 <arguments> <the-docker-image-name> serve
+$ ​docker run -it -p 8000:8000 -v $PWD:/root <the-docker-image-name> serve
 ```
 
 ### just one command(option)
